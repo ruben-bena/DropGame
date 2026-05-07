@@ -66,6 +66,10 @@ public class Main extends ApplicationAdapter {
         bucketRectangle = new Rectangle();
         dropRectangle = new Rectangle();
 
+        // sound and music
+        music.setLooping(true);
+        music.setVolume(.5f);
+        music.play();
     }
 
     @Override
@@ -102,7 +106,6 @@ public class Main extends ApplicationAdapter {
         bucketSprite.setX(MathUtils.clamp(bucketSprite.getX(), 0, worldWidth - bucketWidth));
 
         float delta = Gdx.graphics.getDeltaTime();
-        // Apply the bucket position and size to the bucketRectangle
         bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), bucketWidth, bucketHeight);
 
         for (int i = dropSprites.size - 1; i >= 0; i--) {
@@ -111,12 +114,12 @@ public class Main extends ApplicationAdapter {
             float dropHeight = dropSprite.getHeight();
 
             dropSprite.translateY(-2f * delta);
-            // Apply the drop position and size to the dropRectangle
             dropRectangle.set(dropSprite.getX(), dropSprite.getY(), dropWidth, dropHeight);
 
             if (dropSprite.getY() < -dropHeight) dropSprites.removeIndex(i);
-            else if (bucketRectangle.overlaps(dropRectangle)) { // Check if the bucket overlaps the drop
-                dropSprites.removeIndex(i); // Remove the drop
+            else if (bucketRectangle.overlaps(dropRectangle)) {
+                dropSprites.removeIndex(i);
+                dropSound.play(); // Play the sound
             }
         }
 
